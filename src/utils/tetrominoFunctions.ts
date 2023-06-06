@@ -18,7 +18,6 @@ const setTetrominoInPlace = (fieldState: FieldState): FieldState => {
 }
 
 const executeFall = (fieldState: FieldState): FieldState => {
-    console.log(fieldState)
     if (!fieldState.tetromino) {
         return fieldState;
     }

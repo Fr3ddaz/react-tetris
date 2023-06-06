@@ -9,7 +9,11 @@ type Props = {
 
 export const Field: React.FC<Props> = (props: Props) => {
 
+    console.log("RERENDER");
+
     return (
+        <>
+        {props.frame}
         <table>
             {props.fieldState.blockState.map(blockRow => {
                 return (
@@ -24,5 +28,6 @@ export const Field: React.FC<Props> = (props: Props) => {
                     </tr>
                 )
             })}
-        </table>);
+        </table>
+        </>);
 };
