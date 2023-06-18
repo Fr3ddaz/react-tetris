@@ -13,10 +13,18 @@ export const GameView: React.FC<{}> = () => {
         const interval = setInterval(() => {
             setFieldState((fs) => executeUpdate(fs, "FALL"));
             setFrame((f) => f + 1);
-        }, 1000); 
+        }, 500); 
         return () => clearInterval(interval);
       }, []);
 
+      useEffect(() => {
+        if(fieldState.gameOver) {
+            // do gameover stuff
+        }
+        if(!fieldState.tetromino) {
+            setFieldState((fs) => executeUpdate(fs, "NEW_TETROMINO"))
+        }
+      }, [fieldState])
 
 
     return <Field fieldState={fieldState} frame={frame} />;

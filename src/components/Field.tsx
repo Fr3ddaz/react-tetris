@@ -1,6 +1,7 @@
 import React from "react";
 import { Block } from "./Block";
 import { FieldState } from "../types/types";
+import { drawBlockStateWithTetromino } from "../utils/tetrominoFunctions";
 
 type Props = {
     fieldState: FieldState;
@@ -9,13 +10,13 @@ type Props = {
 
 export const Field: React.FC<Props> = (props: Props) => {
 
-    console.log("RERENDER");
+    const blocks = drawBlockStateWithTetromino(props.fieldState.blockState, props.fieldState.tetromino)
 
     return (
         <>
         {props.frame}
         <table>
-            {props.fieldState.blockState.map(blockRow => {
+            {blocks.map(blockRow => {
                 return (
                     <tr>
                         {blockRow.map(block => {

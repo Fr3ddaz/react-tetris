@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Color } from "../types/types";
 
 const StyledSquare = styled.div`
-    background: ${props => props.color ? props.color : "white"};
+    background: ${props => props.color};
     width: 2rem;
     height: 2rem;
 `;

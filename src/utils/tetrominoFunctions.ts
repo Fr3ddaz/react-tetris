@@ -1,5 +1,5 @@
 import { OTetromino } from "../constants/tetrominoes"
-import { Action, FieldState, Tetromino } from "../types/types";
+import { Action, BlockState, FieldState, Tetromino } from "../types/types";
 
 const setTetrominoInPlace = (fieldState: FieldState): FieldState => {
     if (!fieldState.tetromino) {
@@ -23,8 +23,9 @@ const executeFall = (fieldState: FieldState): FieldState => {
     }
 
     if (fieldState.tetromino.activeCoordinates.some(coordinate => {
-        coordinate.y == 23;
+        return coordinate.y === 23;
     })) {
+        console.log("HERE")
         return setTetrominoInPlace(fieldState)
     }
 
@@ -41,11 +42,6 @@ const executeFall = (fieldState: FieldState): FieldState => {
         return { y: coordinate.y + 1, x: coordinate.x };
     });
 
-    fieldState.blockState[fieldState.tetromino.activeCoordinates[0].y][fieldState.tetromino.activeCoordinates[0].x].color = fieldState.tetromino.color;
-    fieldState.blockState[fieldState.tetromino.activeCoordinates[1].y][fieldState.tetromino.activeCoordinates[1].x].color = fieldState.tetromino.color;
-    fieldState.blockState[fieldState.tetromino.activeCoordinates[2].y][fieldState.tetromino.activeCoordinates[2].x].color = fieldState.tetromino.color;
-    fieldState.blockState[fieldState.tetromino.activeCoordinates[3].y][fieldState.tetromino.activeCoordinates[3].x].color = fieldState.tetromino.color;
-
     return fieldState;
 }
 
@@ -54,6 +50,7 @@ const randomizeTetromino = (): Tetromino => {
 }
 
 const generateNewTetromino = (fieldState: FieldState): FieldState => {
+    console.log("GENERATE NEW TETROMINO")
     const tetromino = randomizeTetromino();
     fieldState.tetromino = tetromino;
     if (fieldState.blockState[tetromino.activeCoordinates[0].y][tetromino.activeCoordinates[0].x].active
@@ -63,11 +60,6 @@ const generateNewTetromino = (fieldState: FieldState): FieldState => {
         fieldState.gameOver = true;
         return fieldState;
     }
-
-    fieldState.blockState[fieldState.tetromino.activeCoordinates[0].y][fieldState.tetromino.activeCoordinates[0].x].color = fieldState.tetromino.color;
-    fieldState.blockState[fieldState.tetromino.activeCoordinates[1].y][fieldState.tetromino.activeCoordinates[1].x].color = fieldState.tetromino.color;
-    fieldState.blockState[fieldState.tetromino.activeCoordinates[2].y][fieldState.tetromino.activeCoordinates[2].x].color = fieldState.tetromino.color;
-    fieldState.blockState[fieldState.tetromino.activeCoordinates[3].y][fieldState.tetromino.activeCoordinates[3].x].color = fieldState.tetromino.color;
 
     return fieldState;
 }
@@ -80,5 +72,23 @@ export const executeUpdate = (fieldState: FieldState, action: Action): FieldStat
             return generateNewTetromino(fieldState);
     }
     return fieldState;
+}
+
+export const drawBlockStateWithTetromino = (blockState: BlockState[][], tetromino: Tetromino | undefined): BlockState[][] => {
+    if(!tetromino) {
+        return blockState;
+    }
+    let newBlockState: BlockState[][] = [];
+    blockState.forEach((row, yIndex) => {
+        newBlockState.push([])
+        row.forEach((block) => {
+            newBlockState[yIndex].push({ active: block.active, color: block.color });
+        });
+    });
+    newBlockState[tetromino.activeCoordinates[0].y][tetromino.activeCoordinates[0].x].color = tetromino.color;
+    newBlockState[tetromino.activeCoordinates[1].y][tetromino.activeCoordinates[1].x].color = tetromino.color;
+    newBlockState[tetromino.activeCoordinates[2].y][tetromino.activeCoordinates[2].x].color = tetromino.color;
+    newBlockState[tetromino.activeCoordinates[3].y][tetromino.activeCoordinates[3].x].color = tetromino.color;
+    return newBlockState;
 }
 
