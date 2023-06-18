@@ -1,29 +1,34 @@
-import React from "react"
-import { Block } from "./Block"
-import { gray } from "../constants/colors"
+import React from "react";
+import { Block } from "./Block";
+import { FieldState } from "../types/types";
+import { drawBlockStateWithTetromino } from "../utils/tetrominoFunctions";
 
+type Props = {
+    fieldState: FieldState;
+    frame: number;
+};
 
-export const Field: React.FC<{}> = () => {
+export const Field: React.FC<Props> = (props: Props) => {
 
-    let blocks: any[] = [];
-
-    for (var i = 0; i < 24; i++) {
-        blocks.push(<tr>
-            <th><Block color={gray} /></th>
-            <th><Block color={gray} /></th>
-            <th><Block color={gray} /></th>
-            <th><Block color={gray} /></th>
-            <th><Block color={gray} /></th>
-            <th><Block color={gray} /></th>
-            <th><Block color={gray} /></th>
-            <th><Block color={gray} /></th>
-            <th><Block color={gray} /></th>
-            <th><Block color={gray} /></th>
-        </tr>);
-      }
+    const blocks = drawBlockStateWithTetromino(props.fieldState.blockState, props.fieldState.tetromino)
 
     return (
+        <>
+        {props.frame}
         <table>
-            {blocks.map(block => {return block})}
-        </table>)
-}
+            {blocks.map(blockRow => {
+                return (
+                    <tr>
+                        {blockRow.map(block => {
+                            return (
+                                <th>
+                                    <Block color={block.color} />
+                                </th>
+                            )
+                        })}
+                    </tr>
+                )
+            })}
+        </table>
+        </>);
+};
